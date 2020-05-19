@@ -1,0 +1,44 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.2.RELEASE'
+	id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.zm'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+}
+
+repositories {
+	maven {url 'https://maven.aliyun.com/repository/central'}
+}
+
+dependencies {
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.2.2.RELEASE'
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.2.2.RELEASE'
+	// https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc
+	//compile group: 'com.microsoft.sqlserver', name: 'sqljdbc4', version: '4.0'
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+	compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.5'
+	compile group: 'commons-collections', name: 'commons-collections', version: '3.2.1'
+	compile 'com.alibaba:fastjson:1.2.58'
+	//implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	//implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.0.1'
+	//implementation 'org.springframework.boot:spring-boot-starter-parent:2.1.5'
+	//developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+	//compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.19'
+	//testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.2.2.RELEASE'
+	
+}

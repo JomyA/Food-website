@@ -1,0 +1,21 @@
+spring: 
+  datasource: 
+    url: jdbc:sqlserver://localhost:1433;DatabaseName=wte
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username: sa
+    password: 123
+  thymeleaf: 
+    mode: HTML
+    cache: false
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+mybatis: 
+  type-aliases-package: 
+    com.zm.wte.food.po,com.zm.wte.manager.po,com.zm.wte.user.po,com.zm.wte.manager.vo,com.zm.wte.food.vo,com.wte.user.vo
+  mapper-locations: classpath*:mybatis/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+server:
+  port: 8080

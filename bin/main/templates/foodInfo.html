@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>What to eat ?</title>
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="/bootstrap/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/main.css">
+    </head>
+    <body>
+        <header class="mb-4 head-color">
+          <div class="container px-0">
+            <div class="row mb-2 logo-brand align-items-center">
+              <div class="col-2 text-center"><img src="/images/logo.png" alt="logo" class="logo-pic"/></div>
+              <div class="col-2 dropdown">
+                <a href="#" class="text-color"><i class="fa fa-map-marker"></i>[[${session.city}]]</a>
+              </div>
+              <div class="col-4 text-center">
+                <img src="/images/banner.png" alt="banner" class="banner-pic">
+              </div>
+              <div class="col-3 text-right" th:if="${not #strings.isEmpty(session.UserName)}">
+                <a href="#" class="dropdown li-a" data-toggle="dropdown" aria-label="Open Profile Menu">
+                  <img th:src="@{/getImg/}+${session.UserImg}" alt="头像" class="head-photo-min"/>&nbsp;
+                  <span name="" th:text="${session.UserName}" class="text-color">昵称</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" th:href="@{/toIndex}"><i class="fa fa-user fa-lg"></i> 个人信息</a></li>
+                  <li><a class="dropdown-item" th:href="@{/logOut}"><i class="fa fa-sign-out fa-lg"></i> 退出登录</a></li>
+                </ul>
+              </div>
+            </div>
+            <ul class="nav nav-justified nav-tabs">
+                <li class="nav-item">
+                  <!-- 哪个类型的菜，则哪个哪个类型的class加 active -->
+                  <a th:href="@{/toIndex}" id="indexA" class="nav-link">首页</a>
+                </li>
+                <li class="nav-item">
+                  <a th:href="@{/breakfast}" id="breakA" class="nav-link">暖心早餐</a>
+                </li>
+                <li class="nav-item">
+                  <a th:href="@{/lunch}" id="lunchA" class="nav-link">丰盛正餐</a>
+                </li>
+                <li class="nav-item">
+                  <a th:href="@{/snack}" id="snackA" class="nav-link">小吃夜宵</a>
+                </li>
+                <li class="nav-item">
+                  <a th:href="@{/desert}" id="desertA" class="nav-link">甜品</a>
+                </li>
+                <li class="nav-item">
+                  <a th:href="@{/drink}" id="drinkA" class="nav-link">饮品</a>
+                </li>
+            </ul>
+          </div>
+        </header>
+        <div class="container border border-secondery">
+            <div class="row shadow-md">
+                <div class="col-5">
+                  <div class="form-row">
+                    <div class="food-img-bg w-100 mt-4">
+                      <div class="food-img-box w-100 border border-secondery mx-auto">
+                          <img th:src="@{/food/getImg/}+${food.getFoodImg()}" alt="菜品" class="h-100 w-100">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row mt-2 mb-1 px-4">
+                    <a th:href="@{/food/poster/}+${food.getUserID()}" class="li-a">
+                      <div class="text-right col-2">
+                        <img th:src="@{/getImg/}+${food.getUserImg()}" alt="" class="head-photo-sm">
+                      </div>
+                    </a>
+                    <div class="col-5 ml-2"><span class="small text-color">[[${food.getUserName()}]]</span></div>
+                    <div class="col-4 text-right"><span class="small" th:text="${#dates.format(food.getPostTime(),'yyyy-MM-dd')}"></span></div>
+                  </div>
+                </div>
+                <div class="col-7">
+                    <span id="textSpan" th:text="${food.getFoodType()}" style="display:none"></span>
+                    <div class="row justify-content-center my-3"><h2 class="food-title">[[${food.getFoodName()}]]</h2></div>
+                    <div class="row" id="firstRow">
+                      <div class="col-4">
+                          <span class="col-1 food-info-label">菜系 :</span>
+                          <span class="col-3 food-info-text">[[${food.getFoodStyle()}]]</span>
+                      </div>
+                      <div class="col-4">
+                          <span class="col-1 food-info-label">口味 :</span>
+                          <span class="col-3 food-info-text">[[${food.getTaste()}]]</span>
+                      </div>
+                      <div class="col-4">
+                          <span class="col-1 food-info-label">做法 :</span>
+                          <span class="col-3 food-info-text">[[${food.getCookMethod()}]]</span>
+                      </div>
+                    </div>
+                    <div class="row mt-4">
+                      <div class="col-4">
+                        <span class="col-1 food-info-label">价格 :</span>
+                        <span class="col-3 food-info-text">[[${#numbers.formatDecimal(food.getPrice(),1,'COMMA',2,'POINT')}]]</span><i class="fa fa-jpy" aria-hidden="true"></i>
+                      </div>
+                      <div class="col-7">
+                        <span class="col-1 food-info-label">评分 :</span>
+                        <span class="bg-black"><span id="score" class="bg-yellow" th:style="'width:'+ ${food.getScore()}*10+'%'"></span></span>&nbsp;&nbsp;[[${#numbers.formatDecimal(food.getScore(),1,'COMMA',1,'POINT')}]]分
+                      </div>
+                    </div>
+                    <div class="row mt-4">
+                      <div class="col-12">
+                        <span class="col-1 food-info-label">地址 :</span>
+                        <span class="col-10 food-info-text">[[${food.getProvince()}]][[${food.getCity()}]][[${food.getAddress()}]]</span><i class="fa fa-map-marker" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                    <div class="row mt-4">
+                      <div class="col-2">
+                        <span class="col-1 food-info-label">描述 :</span>
+                      </div>
+                      <div class="col-10">
+                        <div class="row">
+                          <span class="col-10 food-info-text border-bottom-0 pl-0">[[${food.getDescription()}]]</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-4 mb-2">
+                      <div class="col-12">
+                        <form action="" id="myForm">
+                          <span class="col-1 food-info-label">打分 :</span>
+                          <span class="col-sm-6">
+                            <input id="range" name="range" type="range" class="custom-range" min="0" max="10" disabled oninput="getPoint()">
+                            <span class="point-text ml-1"><span id="point">5</span>分</span>
+                          </span>
+                        </form>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center my-3">
+              <div class="col-4">
+                <button class="cfs" id="collect" disabled><i class="fa fa-heart-o" aria-hidden="true"></i>&nbsp;收藏</button>
+              </div>
+              <div class="col-4">
+                <button class="cfs" id="favorite" disabled><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;点赞</button>
+              </div>
+              <div class="col-4">
+                <button class="cfs" id="share"><i class="fa fa-share" aria-hidden="true"></i>&nbsp;分享</button>
+                <div id="bu" class="qrPic dis">
+                  <img id="qrImg" title="分享到微信"  src="" width="160px">
+                </div>
+              </div>
+            </div>
+            <form id="sendCom" class="border-top border-secondery">
+              <div class="row text-center my-3">
+            	<div class="col-10">
+            		<input id="comment" name="comment" type="text" class="form-control" disabled placeholder="发表评价">
+            	</div>
+            	<div class="col-2">
+            		<button class="btn send-btn" id="send" disabled><i class="fa fa-paper-plane-o" aria-hidden="true"></i>&nbsp;发表</button>
+            	</div>
+              </div>
+            </form>
+            <div class="row my-3">
+                <ul class="list-unstyled text-color px-4 w-100">
+                    <li class="media border-bottom border-secondery mt-3 p-2 li-bg" th:each="comments:${comments}">
+                      <img th:src="@{/getImg/}+${comments.getUserImg()}" class="mr-3" width="80" height="75">
+                      <div class="col-9">
+	                      <h5 class="mt-0">[[${comments.getUserName()}]]</h5>
+	                      <span>[[${comments.getComment()}]]</span>
+                      </div>
+                      <span class="align-self-center col-2 text-right">[[${#dates.format(comments.getComTime(),'yyyy-MM-dd')}]]</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <script src="/jquery-3.4.1.min.js"></script>
+        <script src="/bootstrap/js/popper.js"></script>
+        <script src="/bootstrap/js/bootstrap.js"></script>
+        
+        <script type='text/javascript'>
+          function getPoint() { 
+            var value = document.getElementById('range').value ;
+            document.getElementById('point').innerHTML = value;
+          }
+
+          $(document).ready(function(){ 
+
+          	var type=$("#textSpan").text();
+          	if(type=="暖心早餐"){
+          		$("#breakA").attr("class","nav-link active");
+          	}else if(type=="丰盛正餐"){
+          		$("#lunchA").attr("class","nav-link active");
+          	}else if(type=="小吃夜宵"){
+          		$("#snackA").attr("class","nav-link active");
+          	}else if(type=="甜品"){
+          		$("#desertA").attr("class","nav-link active");
+          		$("#firstRow").css("display","none");
+          	}else if(type=="饮品"){
+          		$("#drinkA").attr("class","nav-link active");
+          		$("#firstRow").css("display","none");
+          	}
+        	
+            var fav=[[${fav}]];
+            if(fav<1){ //已登录未点赞
+              $("#favorite").removeAttr("disabled");
+            }else if(fav==1){ //已点赞
+              $("#favorite").children().attr("class","fa fa-thumbs-up");
+            }
+            var col=[[${col}]];
+            if(col<1){ //已登录未收藏
+              $("#collect").removeAttr("disabled");
+            }else if(col==1){ //已收藏
+              $("#collect").children().attr("class","fa fa-heart");
+            }
+            var rev=[[${rev}]];
+            if(rev<1){ //已登录未评分
+              $("#range").removeAttr("disabled");
+            }else if(rev==1){ //已评分
+              var myPoint=[[${point}]];
+              $("#point").html(myPoint);
+              $("#range").val(myPoint);
+            }
+        	
+            var foodID=[[${food.getFoodID()}]];
+            $("#range").mouseup(function(){ //发表评分
+              var score=$("#range").val();
+              var url = "/revScore";//路径：后端controller的请求路径
+              var data = {"score":score,"foodID":foodID};
+              $.post(url,data,function(result){
+                if(result=="success"){
+                  $("#range").attr("disabled","disabled");
+                  alert("评分成功!");
+                }else{
+                  alert("评分失败!");
+                }
+              });
+            });
+
+            $("#collect").click(function(){ //收藏菜品
+              var url="/addCollect";
+              var data={"foodID":foodID}
+              $.post(url,data,function(result){
+                if(result=="success"){
+                  $("#collect").children().attr("class","fa fa-heart");
+                }else{
+                  alert("收藏失败!");
+                }
+              });
+            });
+
+            $("#favorite").click(function(){ //点赞菜品
+              var url="/addFavorite";
+              var data={"foodID":foodID}
+              $.post(url,data,function(result){
+                if(result=="success"){
+                  $("#favorite").children().attr("class","fa fa-thumbs-up");
+                }else{
+                  alert("点赞失败!");
+                }
+              });
+            });
+            
+            $("#share").click(function(){ //分享菜品
+	            var obj=$("#bu");
+	            var cn="dis";
+	            var reg = new RegExp("\\b"+cn+"\\b");
+	            var path="http://qr.liantu.com/api.php?text=http://47.115.15.121:8080/foodInfo/"+foodID;
+	            $("#qrImg").attr("src",path);
+	            if(reg.test(obj.attr("class"))){
+	              obj.attr("class","qrPic");
+	 	        }else{ 
+	 	          obj.attr("class","qrPic dis"); 
+ 	            }
+            });
+            
+            var load=[[${load}]];
+            if(load==1){ //已登录用户
+              $("#comment").removeAttr("disabled");
+              $("#send").removeAttr("disabled");
+            }
+            $("#send").click(function(){ //发表评价
+              var comment=$("#comment").val();
+              var url="/addComment";
+                  var data={"foodID":foodID,"comment":comment}
+                  $.post(url,data,function(result){
+                    if(result=="success"){
+                      alert("评价成功!");
+                    }else{
+                      alert("评价失败!");
+                    }
+                  });
+            });
+            
+          });
+          
+		    </script>
+
+    </body>
+</html>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zm.wte.food.dao.FoodDao">
+
+	<select id="getAllFoods" resultType="FoodVo">
+		select a.*,b.userName from Food a left join Wuser b on a.userID = b.userID
+	</select>
+	
+	<select id="searchFood" resultType="FoodVo">
+		select a.*,b.userName from Food a left join Wuser b on a.userID = b.userID
+		<where>
+			<if test="_parameter!=null and _parameter!=''">and userName=#{message} or foodName=#{message}</if>
+		</where>
+	</select>
+	
+	<delete id="delF" parameterType="Integer">
+		delete from Food where foodID = #{foodID}
+	</delete>
+	
+	<select id="getMyPost" parameterType="Integer" resultType="Food">
+		select * from Food where userID = #{userID}
+	</select>
+	
+	<select id="getMyFavorite" parameterType="Integer" resultType="Food">
+		select * from Food where foodID in (select foodID from Favorite where userID = #{userID})
+	</select>
+	
+	<select id="getMyCollect" parameterType="Integer" resultType="Food">
+		select * from Food where foodID in (select foodID from Collect where userID = #{userID})
+	</select>
+	
+	<insert id="addFood" parameterType="Food">
+		insert into Food(foodName,foodImg,foodType,styleID,tasteID,methodID,price,score,province,city,address,description,userID)
+		values
+		(#{foodName},#{foodImg},#{foodType},#{styleID},#{tasteID},#{methodID},#{price},#{score},#{province},#{city},#{address},#{description},#{userID})
+	</insert>
+
+	<select id="getNum" parameterType="Integer" resultType="Integer">
+		select count(foodID) from Food where userID = #{userID}
+	</select>
+	
+	<select id="getFood" parameterType="Integer" resultType="FoodVo">
+		select a.*,b.userName,b.userImg from Food a left join Wuser b on a.userID=b.userID
+		<where>
+			<if test="_parameter!=null and _parameter!=''">a.foodID=#{foodID}</if>
+		</where>
+	</select>
+	
+	<select id="getTypeFood" parameterType="String" resultType="FoodVo">
+		select a.*,count(b.userID) as favNum from Food a left join Favorite b on a.foodID=b.foodID
+		<where>
+			<if test="_parameter!=null and _parameter!=''">foodType=#{type}</if>
+		</where>
+		group by a.foodID,foodName,foodImg,foodType,styleID,tasteID,methodID,score,price,province,city,address,description,postTime,a.userID
+	</select>
+	
+	<select id="searchTypeFood" parameterType="String" resultType="FoodVo">
+		<bind name="foodMess" value="'%' + message + '%'"/>
+		select a.*,count(b.userID) as favNum from Food a left join Favorite b on a.foodID=b.foodID
+		<where>
+			<if test="_parameter!=null">and foodType=#{type} and
+				foodName like #{foodMess}
+			</if>
+		</where>
+		group by a.foodID,foodName,foodImg,foodType,styleID,tasteID,methodID,score,price,province,city,address,description,postTime,a.userID
+	</select>
+	
+	<select id="getTopThree" parameterType="String" resultType="Food">
+		select distinct top 3 foodName,foodImg,description,score from Food
+		<where>
+			<if test="_parameter!=null and _parameter!=''">foodType=#{foodType}</if>
+		</where>
+		order by score DESC
+	</select>
+	
+	<select id="getCityFood" parameterType="String" resultType="FoodVo">
+		select a.*,count(b.userID) as favNum from Food a left join Favorite b on a.foodID=b.foodID
+		<where>
+			foodType=#{foodType} and city=#{city}
+		</where>
+		group by a.foodID,foodName,foodImg,foodType,styleID,tasteID,methodID,score,price,province,city,address,description,postTime,a.userID
+	</select>
+	
+	<select id="getStyleFood" resultType="FoodVo">
+		select a.*,count(b.userID) as favNum from Food a left join Favorite b on a.foodID=b.foodID
+		<where>
+			 foodType=#{type} and styleID=#{styleID}
+		</where>
+		group by a.foodID,foodName,foodImg,foodType,styleID,tasteID,methodID,score,price,province,city,address,description,postTime,a.userID
+	</select>
+	
+	<select id="getMethodFood" resultType="FoodVo">
+		select a.*,count(b.userID) as favNum from Food a left join Favorite b on a.foodID=b.foodID
+		<where>
+			foodType=#{type} and methodID=#{methodID}
+		</where>
+		group by a.foodID,foodName,foodImg,foodType,styleID,tasteID,methodID,score,price,province,city,address,description,postTime,a.userID
+	</select>
+	
+	<select id="getTasteFood" resultType="FoodVo">
+		select a.*,count(b.userID) as favNum from Food a left join Favorite b on a.foodID=b.foodID
+		<where>
+			 foodType=#{type} and tasteID=#{tasteID} 
+		</where>
+		group by a.foodID,foodName,foodImg,foodType,styleID,tasteID,methodID,score,price,province,city,address,description,postTime,a.userID
+	</select>
+	
+	<select id="getTimeFood" parameterType="String" resultType="FoodVo">
+		select a.*,count(b.userID) as favNum from Food a left join Favorite b on a.foodID=b.foodID
+		<where>
+			 foodType=#{foodType}
+		</where>
+		group by a.foodID,foodName,foodImg,foodType,styleID,tasteID,methodID,score,price,province,city,address,description,postTime,a.userID
+		order by postTime DESC
+	</select>
+	
+	<select id="getPopulorFood" parameterType="String" resultType="FoodVo">
+		select a.*,count(b.userID) as favNum from Food a left join Favorite b on a.foodID=b.foodID
+		<where>
+			 foodType=#{foodType} 
+		</where>
+		group by a.foodID,foodName,foodImg,foodType,styleID,tasteID,methodID,score,price,province,city,address,description,postTime,a.userID
+		order by favNum DESC
+	</select>
+	
+	<select id="getPriceFood" parameterType="String" resultType="FoodVo">
+		select a.*,count(b.userID) as favNum from Food a left join Favorite b on a.foodID=b.foodID
+		<where>
+			 foodType=#{foodType}
+		</where>
+		group by a.foodID,foodName,foodImg,foodType,styleID,tasteID,methodID,score,price,province,city,address,description,postTime,a.userID
+		order by price DESC
+	</select>
+	
+	<delete id="cancelFavo" parameterType="Integer">
+		delete from Favorite where userID=#{userID} and foodID=#{foodID}
+	</delete>
+	
+	<delete id="cancelColl" parameterType="Integer">
+		delete from Collect where userID=#{userID} and foodID=#{foodID}
+	</delete>
+	
+	<insert id="addFavorite">
+		insert into Favorite(userID,foodID)
+		values(#{userID},#{foodID})
+	</insert>
+	
+	<insert id="addCollect" parameterType="Integer">
+		insert into Collect(userID,foodID)
+		values(#{userID},#{foodID})
+	</insert>
+	
+	<insert id="addScore">
+		insert into Review(userID,foodID,revScore)
+		values(#{userID},#{foodID},#{score})
+	</insert>
+
+	<select id="getFavorite" resultType="Integer">
+		select count(*) from Favorite where userID=#{userID} and foodID=#{foodID}
+	</select>
+	
+	<select id="getCollect" resultType="Integer">
+		select count(*) from Collect where userID=#{userID} and foodID=#{foodID}
+	</select>
+	
+	<select id="getReview" resultType="Integer">
+		select count(*) from Review where userID=#{userID} and foodID=#{foodID}
+	</select>
+	
+	<select id="getPoint" resultType="Integer">
+		select revScore from Review where userID=#{userID} and foodID=#{foodID}
+	</select>
+	
+	<select id="getPosterFood" parameterType="Integer" resultType="FoodVo">
+		select a.*,b.userName,b.userImg,b.userGender,b.userPhone,b.userSign from Food a left join Wuser b on a.userID=b.userID
+		<where>
+			<if test="_parameter!=null and _parameter!=''">a.userID=#{userID}</if>
+		</where>
+	</select>
+
+	<insert id="addComment">
+		insert into Comments(userID,foodID,comment)
+		values(#{userID},#{foodID},#{comment})
+	</insert>
+	
+	<select id="getComment" parameterType="Integer" resultType="CommentVo">
+		select a.*,b.userName,b.userImg from Comments a left join Wuser b on a.userID=b.userID
+		<where>
+			<if test="_parameter!=null and _parameter!=''">foodID=#{foodID}</if>
+		</where>
+	</select>
+	
+	<select id="getStyleID" parameterType="String" resultType="Integer">
+		select styleID from FoodStyle where style=#{foodStyle}
+	</select>
+	<select id="getTasteID" parameterType="String" resultType="Integer">
+		select tasteID from Taste where taste=#{taste}
+	</select>
+	<select id="getMethodID" parameterType="String" resultType="Integer">
+		select methodID from CookMethod where method=#{cookMethod}
+	</select>
+	<select id="getStyle" parameterType="Integer" resultType="String">
+		select style from FoodStyle where styleID=#{styleID}
+	</select>
+	<select id="getTaste" parameterType="Integer" resultType="String">
+		select taste from Taste where tasteID=#{tasteID}
+	</select>
+	<select id="getMethod" parameterType="Integer" resultType="String">
+		select method from CookMethod where methodID=#{methodID}
+	</select>
+	<select id="getStyleList" resultType="FoodStyle">
+		select * from FoodStyle
+	</select>
+	<select id="getTasteList" resultType="Taste">
+		select * from Taste
+	</select>
+	<select id="getMethodList" resultType="CookMethod">
+		select * from CookMethod
+	</select>
+
+</mapper>

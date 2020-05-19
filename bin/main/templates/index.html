@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>What to eat ?</title>
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="/bootstrap/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/main.css">
+    </head>
+    <body>
+        <!-- 引入公共片段 -->
+        <div th:replace="common::noHeader(activeUri='index')"></div>
+
+        <div class="container h-100 border border-secondery border-bottom-0">
+          <div class="row">
+            <!-- 引入侧边栏 -->
+            <div th:replace="common::sidebar"></div>
+
+            <div class="col-10 p-3 my-col-bg">
+              <div class="continer border border-secondery my-container-bg">
+                <div class="text-center border-bottom border-secondery">
+                  <div class="d-block post-container">
+                    <form th:action="@{/saveInfo}" onsubmit="return checkMess()" id="form" name="form" method="POST" enctype="multipart/form-data">
+                      <div class="form-row mt-3">
+                        <div class="col-4">
+                          <img th:src="@{/getImg/}+${user.getUserImg()}" class="head-photo-big img-thumbnail">
+                        </div>
+                        <div class="col-5 align-self-center text-left">
+                          <input type="file" name="upload" id="upload" style="display: none;"
+                            onchange="document.form.path.value=this.value" multiple="multiple" accept="image/*" />
+                            <!-- 当被下面的button触发了点击事件后，输入框的值就赋予再下方的那个只读的输入框 -->
+                          <div class="col-3 d-inline-block mr-0"><input type="button" value="上传头像" onclick="document.form.upload.click()" class="btn btn-primary"></div>
+                          <!-- 该button调用了input type="file"的点击事件 -->
+                          <div class="col-2 d-inline-block"><input name="path" id="path" readonly></div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-10">
+                          <div class="form-row mt-3">
+                            <label class="col-5 col-form-label">账号</label>
+                            <div class="col-5">
+                              <input type="text" name="userID" class="form-control-plaintext px-2" placeholder="账号" th:value="${user.getUserID()}" readonly>
+                            </div>
+                          </div>
+                          <div class="form-row mt-2">
+                            <label class="col-5 col-form-label">用户名</label>
+                            <div class="col-5">
+                              <input type="text" id="account" name="account" class="form-control" placeholder="请输入用户名(不能为纯数字)" th:value="${user.getUserName()}">
+                            </div>
+                            <div id="m1" class="col-2 error-tip align-self-center text-left pl-3">不能为空！</div>
+                          </div>
+                          <div class="form-row mt-2">
+                            <label class="col-5 col-form-label">密码</label>
+                            <div class="col-5">
+                              <input type="password" id="password" name="password" class="form-control" placeholder="密码" th:value="${user.getUserPass()}">
+                            </div>
+                            <div id="m2" class="col-2 error-tip align-self-center text-left pl-3">不能为空！</div>
+                          </div>
+                          <div class="form-row mt-2">
+                            <label class="col-5 col-form-label">性别</label>
+                            <div class="col-6 align-self-center text-left">
+                              <div class="col-1 custom-control custom-radio custom-control-inline">
+                                <input type="radio" name="gender" id="man" value="男" th:checked="${user.getUserGender()=='男'}" class="custom-control-input">
+                                <label class="custom-control-label" for="man">男</label>
+                              </div>
+                              <div class="col-1 custom-control custom-radio custom-control-inline">
+                                <input type="radio" name="gender" id="woman" value="女" th:checked="${user.getUserGender()=='女'}" class="custom-control-input">
+                                <label class="custom-control-label" for="woman">女</label>
+                              </div>
+                              <div class="col-3 custom-control custom-radio custom-control-inline">
+                                <input type="radio" name="gender" id="unknow" value="保密" th:checked="${user.getUserGender()=='保密'}" class="custom-control-input">
+                                <label class="custom-control-label" for="unknow">保密</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-row mt-2">
+                            <label class="col-5 col-form-label">联系方式</label>
+                            <div class="col-5">
+                              <input type="text" id="phone" name="phone" class="form-control" placeholder="联系方式" th:value="${user.getUserPhone()}">
+                            </div>
+                            <div id="m3" class="col-2 error-tip align-self-center text-left pl-3">不能为空！</div>
+                          </div>
+                          <div class="form-row mt-2">
+                            <label class="col-5 col-form-label">个人介绍</label>
+                            <div class="col-5">
+                              <input type="text" id="userSign" name="userSign" class="form-control" placeholder="个人介绍" th:value="${user.getUserSign()}">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-2 align-self-center">
+                          <div class="form-row">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;保存</button>
+                          </div>
+                          <div class="form-row mt-2">
+                            <a class="btn btn-warning" th:href="@{/logOut}"><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;退出</a>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <script src="/jquery-3.4.1.min.js"></script>
+        <script src="/bootstrap/js/popper.js"></script>
+        <script src="/bootstrap/js/bootstrap.js"></script>
+
+        <script type="text/javascript">
+        	$("#m1").hide(); $("#m2").hide(); $("#m3").hide();
+            function checkMess(){
+    	      var flag=true;
+            var reg = /^[0-9]*$/;
+              if(reg.test($("#account").val())){ $("#m1").text("禁纯数字！"); $("#m1").show(); flag=false; return false; }
+              if($("#account").val()==""){ $("#m1").text("不能为空！"); $("#m1").show();  flag=false; return false;}
+              if($("#password").val()==""){  $("#m2").show();  flag=false; return false;}
+              if($("#phone").val()==""){  $("#m3").show();  flag=false; return false;}
+              if(flag){ return true; }
+            }
+        </script>
+    </body>
+</html>

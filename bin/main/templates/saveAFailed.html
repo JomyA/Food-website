@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>What to eat ?</title>
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="/bootstrap/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/main.css">
+    </head>
+    <body>
+        <div class="border border-secondery">
+          <div class="row mx-0 row-banner"><span class="mx-auto">What to eat ?</span></div>
+          <div class="row mx-0">
+            <!-- 引入侧边栏 -->
+            <div th:replace="common::sidebar(activeBar='myPost')"></div>
+            
+            <div class="col-10 my-col-bg">
+              <div class="continer my-container-bg border border-secondery my-3">
+                <div class="text-center border-bottom border-secondery">
+                    <div class="d-block info-container">
+                        <div class="success-label">
+                            <i class="fa fa-times-circle" aria-hidden="true"></i></i>&nbsp;保存失败
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <script src="/jquery-3.4.1.min.js"></script>
+        <script src="/bootstrap/js/popper.js"></script>
+        <script src="/bootstrap/js/bootstrap.js"></script>
+    </body>
+</html>

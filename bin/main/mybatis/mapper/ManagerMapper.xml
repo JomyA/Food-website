@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zm.wte.manager.dao.ManagerDao">
+	
+	<insert id="addManager" parameterType="Manager">
+		insert into Manager(managerID,managerPass,managerName,managerImg,managerGender,managerPhone,managerAddress)
+		values
+		(#{managerID},#{managerPass},#{managerName},#{managerImg},#{managerGender},#{managerPhone},#{managerAddress})
+	</insert>
+	
+	<select id="getAdmin" parameterType="String" resultType="Manager">
+		select * from Manager
+		<where>
+			<if test="_parameter!=null and _parameter!=''">managerID=#{account}</if>
+		</where>
+	</select>
+	
+	<select id="getAllManagers" resultType="Manager">
+		select * from Manager
+	</select>
+	
+	<select id="searchManager" resultType="Manager">
+		select * from Manager
+		<where>
+			<if test="_parameter!=null and _parameter!=''">and managerID=#{message} 
+			or managerName=#{message} or managerPhone=#{message} or managerGender=#{message}</if>
+		</where>
+	</select>
+	
+	<update id="saveInfo" parameterType="Manager">
+		update Manager
+		<set>
+			<if test="managerPass!=null">managerPass = #{managerPass},</if>
+			<if test="managerName!=null">managerName = #{managerName},</if>
+			<if test="managerImg!=null">managerImg = #{managerImg},</if>
+			<if test="managerPhone!=null">managerPhone = #{managerPhone},</if>
+			<if test="managerGender!=null">managerGender = #{managerGender},</if>
+			<if test="managerAddress!=null">managerAddress = #{managerAddress},</if>
+		</set>
+		where managerID = #{managerID}
+	</update>
+	
+	<delete id="delA" parameterType="String">
+		delete from Manager where managerID = #{account}
+	</delete>
+	
+</mapper>

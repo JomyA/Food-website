@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>What to eat ?</title>
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="/bootstrap/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/main.css">
+    </head>
+    <body>
+        <header class="mb-4 head-color">
+          <div class="container px-0">
+            <div class="row mb-2 logo-brand align-items-center">
+              <div class="col-2 text-center"><img src="/images/logo.png" alt="logo" class="logo-pic"/></div>
+              <div class="col-2 dropdown">
+                <a href="#" class="dropdown-toggle text-color" data-toggle="dropdown">
+                  <i class="fa fa-map-marker"></i>
+                  [[${session.city}]]</a>
+                  <div class="dropdown-menu px-2">
+                    <div class="form-row">
+                      <div class="col-12 text-center border-bottom border-secondery mb-1">
+                        <a th:href="@{/food/location/breakfast/}+${session.city}" class="city-a mx-1">当前城市</a></div>
+                      <div class="col-4"><a th:href="@{/food/location/breakfast/}+'广州'" class="city-a mx-1">广州</a></div>
+                      <div class="col-4"><a th:href="@{/food/location/breakfast/}+'深圳'" class="city-a mx-1">深圳</a></div>
+                      <div class="col-4"><a th:href="@{/food/location/breakfast/}+'中山'" class="city-a mx-1">中山</a></div>
+                      <div class="col-4"><a th:href="@{/food/location/breakfast/}+'揭阳'" class="city-a mx-1">揭阳</a></div>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-4 text-center">
+                <img src="/images/banner.png" alt="banner" class="banner-pic">
+              </div>
+              <div class="col-3 text-right" th:if="${not #strings.isEmpty(session.UserName)}">
+                <a href="#" class="dropdown li-a" data-toggle="dropdown" aria-label="Open Profile Menu">
+                  <img th:src="@{/getImg/}+${session.UserImg}" alt="头像" class="head-photo-min"/>&nbsp;
+                  <span name="account" th:text="${session.UserName}" class="text-color"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" th:href="@{/toIndex}"><i class="fa fa-user fa-lg"></i> 个人信息</a></li>
+                  <li><a class="dropdown-item" th:href="@{/logOut}"><i class="fa fa-sign-out fa-lg"></i> 退出登录</a></li>
+                </ul>
+              </div>
+            </div>
+            <ul class="nav nav-justified nav-tabs">
+                <li class="nav-item">
+                  <a th:href="@{/toIndex}" class="nav-link active">首页</a>
+                </li>
+                <li class="nav-item">
+                  <a th:href="@{/breakfast}" class="nav-link">暖心早餐</a>
+                </li>
+                <li class="nav-item">
+                  <a th:href="@{/lunch}" class="nav-link">丰盛正餐</a>
+                </li>
+                <li class="nav-item">
+                  <a th:href="@{/snack}" class="nav-link">小吃夜宵</a>
+                </li>
+                <li class="nav-item">
+                  <a th:href="@{/desert}" class="nav-link">甜品</a>
+                </li>
+                <li class="nav-item">
+                  <a th:href="@{/drink}" class="nav-link">饮品</a>
+                </li>
+            </ul>
+          </div>
+        </header>
+        <div class="container border border-secondery">
+            <div class="row border-bottom border-secondery shadow py-4 poster-bg">
+              <div class="col-3 offset-1 text-center">
+                <img th:src="@{/getImg/}+${poster.getUserImg()}" alt="头像" class="head-photo-circle"/>
+              </div>
+              <div class="col-7">
+                <div class="row mb-1"><span class="col-2">用户名：</span><span class="col-6">[[${poster.getUserName()}]]</span></div>
+                <div class="row mb-1"><span class="col-2">性别：</span><span class="col-6">[[${poster.getUserGender()}]]</span></div>
+                <div class="row mb-1"><span class="col-2">联系方式：</span><span class="col-6">[[${poster.getUserPhone()}]]</span></div>
+                <div class="row mb-1"><span class="col-2">个性签名：</span><span class="col-6">[[${poster.getUserSign()}]]</span></div>
+              </div>
+            </div>
+            <div class="row my-3">
+                <ul class="list-unstyled text-color px-4 w-100">
+                    <div class="row mx-2 ">
+                    	<span class="col-6 text-left">TA 的发布</span>
+                    	<span class="col-6 text-right pr-4">发布时间</span>
+                    </div>
+                    <li class="media border-bottom border-secondery mt-3 p-2 li-bg" th:each="food:${food}">
+                      <img th:src="@{/food/getImg/}+${food.getFoodImg()}" class="mr-3" width="80" height="75">
+                      <a th:href="@{/foodInfo/}+${food.getFoodID()}" class="media-body li-a col-10">
+                        <h5 class="mt-0">[[${food.getFoodName()}]]</h5>
+                        <span>[[${food.getDescription()}]]</span>
+                      </a>
+                      <span class="align-self-center text-right col-2">[[${#dates.format(food.getPostTime(),'yyyy-MM-dd')}]]</span>
+                    </li>
+                  </ul>
+            </div>
+        </div>
+
+        <script src="/jquery-3.4.1.min.js"></script>
+        <script src="/bootstrap/js/popper.js"></script>
+        <script src="/bootstrap/js/bootstrap.js"></script>
+    </body>
+</html>

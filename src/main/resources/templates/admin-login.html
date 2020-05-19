@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>What to eat ?</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/bootstrap/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/main.css">
+  </head>
+  <body>
+    <section class="material-half-bg">
+      <div class="cover"></div>
+    </section>
+    <section class="login-content">
+      <div class="logo">
+        <h1>What to Eat</h1>
+      </div>
+      <div class="adminlogin-box">
+        <form class="login-form" th:action="@{/adminLogin}">
+          <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>登录</h3>
+          <p style="color:#dc3545" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+          <div class="form-group">
+            <label class="control-label">账号</label>
+            <input class="form-control" name="account" type="text" placeholder="请输入账号" autofocus>
+          </div>
+          <div class="form-group">
+            <label class="control-label">密码</label>
+            <input class="form-control" name="password" type="password" placeholder="请输入密码">
+          </div>
+          <div class="form-group">
+            <div class="utility">
+            </div>
+          </div>
+          <div class="form-group mb-0">
+            <button class="btn btn-primary btn-block"><i class="fa fa-sign-in fa-lg fa-fw"></i>登录</button>
+          </div>
+        </form>
+      </div>
+    </section>
+    <script src="/jquery-3.4.1.min.js"></script>
+    <script src="/bootstrap/js/popper.js"></script>
+    <script src="/bootstrap/js/bootstrap.js"></script>
+
+    <script type="text/javascript">
+      // if(!!(window.history && history.pushState)){
+      //   alert(history.length);
+      //   history.pushState(null, null, "?a=1");
+      //   alert(history.length);
+      //   window.onpopstate = function () {
+      //     alert(4);
+      //     history.pushState(null, null, "admin-login.html");
+      //   };
+      // }
+    </script>
+
+  </body>
+</html>

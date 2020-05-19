@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>What to eat ?</title>
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="/bootstrap/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/main.css">
+    </head>
+    <body>
+        
+        <!-- 首页右上角没有头像昵称 -->
+        <header class="mb-4 head-color" th:fragment="noHeader">
+          <div class="container px-0">
+            <div class="row mb-2 logo-brand align-items-center">
+              <div class="col-2 text-center"><img src="/images/logo.png" alt="logo" class="logo-pic"/></div>
+              <div class="col-2 dropdown">
+                <a href="#" class=" text-color"><i class="fa fa-map-marker"></i>&nbsp;[[${session.city}]]</a>
+              </div>
+              <div class="col-4 text-center">
+                <img src="/images/banner.png" alt="banner" class="banner-pic">
+              </div>
+            </div>
+            <ul class="nav nav-justified nav-tabs">
+                <li class="nav-item">
+                  <a th:href="@{/toIndex}" th:class="${activeUri=='index'?'nav-link active':'nav-link'}">首页</a>
+                </li>
+                <li class="nav-item">
+                  <a th:href="@{/breakfast}" class="nav-link">暖心早餐</a>
+                </li>
+                <li class="nav-item">
+                  <a th:href="@{/lunch}" class="nav-link">丰盛正餐</a>
+                </li>
+                <li class="nav-item">
+                  <a th:href="@{/snack}" class="nav-link">小吃夜宵</a>
+                </li>
+                <li class="nav-item">
+                  <a th:href="@{/desert}" class="nav-link">甜品</a>
+                </li>
+                <li class="nav-item">
+                  <a th:href="@{/drink}" class="nav-link">饮品</a>
+                </li>
+              </ul>
+            </div>
+        </header>
+
+        <!-- 首页侧边栏 -->
+        <div class="col-2 border-right border-bottom border-secondery" th:fragment="sidebar">
+          <div class="row text-center">
+            <div class="my-4 w-100">
+              <a th:href="@{/toIndex}"><img th:src="@{/getImg/}+${session.UserImg}" alt="头像" class="head-photo img-thumbnail"/></a>
+            </div>
+            <div class="w-100 mb-2 pb-2"><span>[[${session.UserName}]]</span></div>
+            <ul class="nav flex-column w-100">
+              <li class="nav-item">
+                <a th:href="@{/myPost}" th:class="${activeBar=='myPost'?'nav-link active-nav':'nav-link'}">我的发布&nbsp;
+                  <small><i class="fa fa-chevron-right" aria-hidden="true"></i></small></a>
+              </li>
+              <li class="nav-item">
+                <a th:href="@{/myFavorite}" th:class="${activeBar=='myFavo'?'nav-link active-nav':'nav-link'}">我的点赞&nbsp;
+                  <small><i class="fa fa-chevron-right" aria-hidden="true"></i></small></a>
+              </li>
+              <li class="nav-item">
+                <a th:href="@{/myCollect}" th:class="${activeBar=='myColl'?'nav-link active-nav':'nav-link'}">我的收藏&nbsp;
+                  <small><i class="fa fa-chevron-right" aria-hidden="true"></i></small></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 非首页右上角有头像昵称 -->
+        <header class="mb-4 head-color" th:fragment="yesHeader">
+          <div class="container px-0">
+            <div class="row mb-2 logo-brand align-items-center">
+              <div class="col-2 text-center"><img src="/images/logo.png" alt="logo" class="logo-pic"/></div>
+              <div class="col-2 dropdown">
+                <a href="#" class="dropdown-toggle text-color" data-toggle="dropdown">
+                  <i class="fa fa-map-marker"></i>
+                  地址</a>
+                  <div class="dropdown-menu px-2">
+                    <div class="form-row">
+                      <div class="col-3"><a href="#" class="city-a mx-1">aaa</a></div>
+                      <div class="col-3"><a href="#" class="city-a mx-1">bbb</a></div>
+                      <div class="col-3"><a href="#" class="city-a mx-1">ccc</a></div>
+                      <div class="col-3"><a href="#" class="city-a mx-1">ddd</a></div>
+                      <div class="col-3"><a href="#" class="city-a mx-1">aaa</a></div>
+                      <div class="col-3"><a href="#" class="city-a mx-1">bbb</a></div>
+                      <div class="col-3"><a href="#" class="city-a mx-1">ccc</a></div>
+                      <div class="col-3"><a href="#" class="city-a mx-1">ddd</a></div>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-4 text-center">
+                <form action="#">
+                  <button class="btn btn-primary mr-1">搜索&nbsp;<i class="fa fa-search"></i></button>
+                  <input class="w-75 d-inline-block form-control" type="search" name="" placeholder="输入菜品信息" aria-controls="tableid">
+                </form>
+              </div>
+              <div class="col-3 text-right">
+                <a href="#" class="dropdown li-a" data-toggle="dropdown" aria-label="Open Profile Menu">
+                  <img th:src="@{/getImg/}+${user.uerImg}" alt="头像" class="head-photo-min"/>
+                  <span id="" name="" class="text-color">&nbsp;昵称</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" th:href="@{/manager/getManager/}+${session.loginUser}"><i class="fa fa-user fa-lg"></i> 个人信息</a></li>
+                  <li><a class="dropdown-item" th:href="@{/}"><i class="fa fa-sign-out fa-lg"></i> 退出登录</a></li>
+                </ul>
+              </div>
+            </div>
+            <ul class="nav nav-justified nav-tabs">
+                <li class="nav-item">
+                  <a href="@{/toIndex}" class="nav-link">首页</a>
+                </li>
+                <li class="nav-item">
+                  <a href="@{/breakfast}" class="nav-link active">暖心早餐</a>
+                </li>
+                <li class="nav-item">
+                  <a href="@{/lunch}" class="nav-link">丰盛正餐</a>
+                </li>
+                <li class="nav-item">
+                  <a href="@{/snack}" class="nav-link">小吃夜宵</a>
+                </li>
+                <li class="nav-item">
+                  <a href="@{/desert}" class="nav-link">甜品</a>
+                </li>
+                <li class="nav-item">
+                  <a href="@{/drink}" class="nav-link">饮品</a>
+                </li>
+            </ul>
+          </div>
+        </header>
+        
+        <script src="/jquery-3.4.1.min.js"></script>
+        <script src="/bootstrap/js/popper.js"></script>
+        <script src="/bootstrap/js/bootstrap.js"></script>
+    </body>
+</html>

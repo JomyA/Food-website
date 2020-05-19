@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>What to eat ?</title>
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="/bootstrap/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/main.css">
+    </head>
+    <body>
+        <div class="border border-secondery">
+          <div class="row mx-0 row-banner"><span class="mx-auto">What to eat ?</span></div>
+          <div class="row mx-0">
+            <div class="col-2 border-right border-secondery">
+              <div class="row text-center">
+                <ul class="nav flex-column w-100">
+                  <li class="nav-item">
+                    <a th:href="@{/admin/mainPage}" class="nav-link admin-nav-text active-nav"><i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;个人信息</a>
+                  </li>
+                  <li class="nav-item">
+                    <a th:href="@{/admin/userList}" class="nav-link admin-nav-text"><i class="fa fa-user fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;用户管理</a>
+                  </li>
+                  <li class="nav-item">
+                    <a th:href="@{/admin/foodList}" class="nav-link admin-nav-text"><i class="fa fa-cutlery fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;菜品管理</a>
+                  </li>
+                  <li class="nav-item">
+                    <a th:href="@{/admin/managerList}" class="nav-link admin-nav-text"><i class="fa fa-user fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;管理员管理</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-10 my-col-bg">
+              <div class="continer my-container-bg border border-secondery my-3">
+                <div class="text-center border-bottom border-secondery">
+                    <div class="d-block info-container">
+                        <form th:action="@{/admin/saveInfo}" onsubmit="return checkMess()" id="form" name="form" method="POST" enctype="multipart/form-data">
+                          <div class="form-row mt-3">
+                            <div class="col-4">
+                              <img th:src="@{/admin/getImg/}+${manager.managerImg}" alt="" class="head-photo-big img-thumbnail">
+                            </div>
+                            <div class="col-5 align-self-center text-left">
+                              <input type="file" name="upload" id="upload" style="display: none;"
+                                onchange="document.form.path.value=this.value" multiple="multiple" accept="image/*" />
+                                <!-- 当被下面的button触发了点击事件后，输入框的值就赋予再下方的那个只读的输入框 -->
+                              <div class="col-3 d-inline-block mr-0"><input type="button" value="上传头像" onclick="document.form.upload.click()" class="btn btn-primary"></div>
+                              <!-- 该button调用了input type="file"的点击事件 -->
+                              <div class="col-2 d-inline-block"><input name="path" id="path" readonly></div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-10">
+                              <div class="form-row mt-3">
+                                <label for="account" class="col-5 col-form-label">账号</label>
+                                <div class="col-5">
+                                  <input name="account" type="text" class="form-control-plaintext px-2" placeholder="账号" th:value="${manager.getManagerID()}" readonly>
+                                </div>
+                              </div>
+                              <div class="form-row mt-2">
+                                <label for="password" class="col-5 col-form-label">密码</label>
+                                <div class="col-5">
+                                  <input id="password" name="password" type="password" class="form-control" placeholder="密码" th:value="${manager.getManagerPass()}">
+                                </div>
+                                <div id="m1" class="col-2 error-tip align-self-center text-left pl-3">不能为空！</div>
+                              </div>
+                              <div class="form-row mt-2">
+                                <label for="name" class="col-5 col-form-label">姓名</label>
+                                <div class="col-5">
+                                  <input id="name" name="name" type="text" class="form-control" placeholder="姓名" th:value="${manager.getManagerName()}">
+                                </div>
+                                <div id="m2" class="col-2 error-tip align-self-center  text-left pl-3">不能为空！</div>
+                              </div>
+                              <div class="form-row mt-2">
+                                <label for="phone" class="col-5 col-form-label">联系方式</label>
+                                <div class="col-5">
+                                  <input id="phone" name="phone" type="text" class="form-control" placeholder="联系方式" th:value="${manager.getManagerPhone()}">
+                                </div>
+                                <div id="m3" class="col-2 error-tip align-self-center text-left pl-3">不能为空！</div>
+                              </div>
+                              <div class="form-row mt-2">
+                                <label for="gender" class="col-5 col-form-label">性别</label>
+                                <div class="col-6 align-self-center text-left">
+                                  <div class="col-1 custom-control custom-radio custom-control-inline">
+                                    <input type="radio" name="gender" id="man" value="男" th:checked="${manager.getManagerGender()=='男'}" class="custom-control-input">
+                                    <label class="custom-control-label" for="man">男</label>
+                                  </div>
+                                  <div class="col-1 custom-control custom-radio custom-control-inline">
+                                    <input type="radio" name="gender" id="woman" value="女" th:checked="${manager.getManagerGender()=='女'}" class="custom-control-input">
+                                    <label class="custom-control-label" for="woman">女</label>
+                                  </div>
+                                  <div class="col-3 custom-control custom-radio custom-control-inline">
+                                    <input type="radio" name="gender" id="unknow" value="保密" th:checked="${manager.getManagerGender()=='保密'}" class="custom-control-input">
+                                    <label class="custom-control-label" for="unknow">保密</label>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="form-row mt-2">
+                                <label for="address" class="col-5 col-form-label">地址</label>
+                                <div class="col-5">
+                                  <input id="address" name="address" type="text" class="form-control" placeholder="地址" th:value="${manager.getManagerAddress()}">
+                                </div>
+                                <div id="m4" class="col-2 error-tip align-self-center text-left pl-3">不能为空！</div>
+                              </div>
+                              <div class="form-row my-4">
+                                <div class="offset-3 col-3">
+                                  <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;保存</button>
+                                </div>
+                                <div class="col-3">
+                                  <a class="btn btn-warning" th:href="@{/admin/logOut}"><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;退出</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <script src="/jquery-3.4.1.min.js"></script>
+        <script src="/bootstrap/js/popper.js"></script>
+        <script src="/bootstrap/js/bootstrap.js"></script>
+
+        <script type="text/javascript">
+        	$("#m1").hide(); $("#m2").hide(); $("#m3").hide(); $("#m4").hide();
+            function checkMess(){
+    	      var flag=true;
+              if($("#password").val()==""){  $("#m1").show();  flag=false;}
+              if($("#name").val()==""){  $("#m2").show();  flag=false;}
+              if($("#phone").val()==""){  $("#m3").show();  flag=false;}
+              if($("#address").val()==""){  $("#m4").show();  flag=false;}
+              return flag;
+            }
+        </script>
+    </body>
+</html>

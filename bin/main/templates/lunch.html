@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>What to eat ?</title>
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="/bootstrap/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/main.css">
+    </head>
+    <body>
+        <header class="mb-4 head-color">
+          <div class="container px-0">
+            <div class="row mb-2 logo-brand align-items-center">
+              <div class="col-2 text-center"><img src="/images/logo.png" alt="logo" class="logo-pic"/></div>
+              <div class="col-2 dropdown">
+                <a href="#" class="dropdown-toggle text-color" data-toggle="dropdown">
+                  <i class="fa fa-map-marker"></i>
+                  [[${session.city}]]</a>
+                  <div class="dropdown-menu px-2">
+                    <div class="form-row">
+                      <div class="col-12 text-center border-bottom border-secondery mb-1">
+                        <a th:href="@{/food/location/lunch/}+${session.city}" class="city-a mx-1">当前城市</a></div>
+                      <div class="col-4"><a th:href="@{/food/location/lunch/}+'广州'" class="city-a mx-1">广州</a></div>
+                      <div class="col-4"><a th:href="@{/food/location/lunch/}+'深圳'" class="city-a mx-1">深圳</a></div>
+                      <div class="col-4"><a th:href="@{/food/location/lunch/}+'中山'" class="city-a mx-1">中山</a></div>
+                      <div class="col-4"><a th:href="@{/food/location/lunch/}+'揭阳'" class="city-a mx-1">揭阳</a></div>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-4 text-center">
+                <form th:action="@{/searchFood/lunch}">
+                  <button class="btn btn-primary mr-1">搜索&nbsp;<i class="fa fa-search"></i></button>
+                  <input class="w-75 d-inline-block form-control" type="search" name="message" placeholder="输入菜品信息" aria-controls="tableid">
+                </form>
+              </div>
+              <div class="col-3 text-right" th:if="${not #strings.isEmpty(session.UserName)}">
+                <a href="#" class="dropdown li-a" data-toggle="dropdown" aria-label="Open Profile Menu">
+                  <img th:src="@{/getImg/}+${session.UserImg}" alt="头像" class="head-photo-min"/>&nbsp;
+                  <span name="account" th:text="${session.UserName}" class="text-color"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" th:href="@{/toIndex}"><i class="fa fa-user fa-lg"></i> 个人信息</a></li>
+                  <li><a class="dropdown-item" th:href="@{/logOut}"><i class="fa fa-sign-out fa-lg"></i> 退出登录</a></li>
+                </ul>
+              </div>
+            </div>
+            <ul class="nav nav-justified nav-tabs">
+              <li class="nav-item">
+                <a th:href="@{/toIndex}" class="nav-link">首页</a>
+              </li>
+              <li class="nav-item">
+                <a th:href="@{/breakfast}" class="nav-link">暖心早餐</a>
+              </li>
+              <li class="nav-item">
+                <a th:href="@{/lunch}" class="nav-link active">丰盛正餐</a>
+              </li>
+              <li class="nav-item">
+                <a th:href="@{/snack}" class="nav-link">小吃夜宵</a>
+              </li>
+              <li class="nav-item">
+                <a th:href="@{/desert}" class="nav-link">甜品</a>
+              </li>
+              <li class="nav-item">
+                <a th:href="@{/drink}" class="nav-link">饮品</a>
+              </li>
+            </ul>
+          </div>
+        </header>
+        <div class="container border border-secondery">
+            <div class="row border-bottom border-secondery shadow">
+              <div class="col-6 mt-4 mb-3">
+                <div class="carousel slide lbt-bg" data-ride="carousel" data-interval="5000" data-wrap="true" data-pause="hover" id="myCarousel">
+                  <!-- 轮播状态 -->
+                  <ol class="carousel-indicators">
+                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                      <li data-target="#myCarousel" data-slide-to="1"></li>
+                      <li data-target="#myCarousel" data-slide-to="2"></li>
+                  </ol>
+                  <!-- 轮播主体 -->
+                  <div class="carousel-inner">
+                      <div class="carousel-item active lbt-bg">
+                          <img th:src="@{/food/getImg/}+${topFood.get(0).getFoodImg()}" class="d-block w-100 h-100" alt="">
+                          <!-- 图片字幕 -->
+                          <div class="carousel-caption">
+                            <h5>[[${topFood.get(0).getFoodName()}]]</h5>
+                            <p>[[${topFood.get(0).getDescription()}]]</p>
+                          </div>
+                      </div>
+                      <div class="carousel-item lbt-bg">
+                          <img th:src="@{/food/getImg/}+${topFood.get(1).getFoodImg()}" class="d-block w-100 h-100" alt="">
+                          <!-- 图片字幕 -->
+                          <div class="carousel-caption">
+                            <h5>[[${topFood.get(1).getFoodName()}]]</h5>
+                            <p>[[${topFood.get(1).getDescription()}]]</p>
+                          </div>
+                      </div>
+                      <div class="carousel-item lbt-bg">
+                          <img th:src="@{/food/getImg/}+${topFood.get(2).getFoodImg()}" class="d-block w-100 h-100" alt="">
+                          <!-- 图片字幕 -->
+                          <div class="carousel-caption">
+                            <h5>[[${topFood.get(2).getFoodName()}]]</h5>
+                            <p>[[${topFood.get(2).getDescription()}]]</p>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- 点击切换 -->
+                  <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                  </a>
+                  <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                  </a>
+                </div>
+              </div>
+              <div class="col-6 text-center mt-5">
+                <img src="/images/lunch.png" alt="">
+              </div>
+            </div>
+            <div class="row food-nav-text mt-3 border-top border-secondery pt-4">
+              <div class="col-2 text-right">
+                <span>菜系 :</span>
+              </div>
+              <div class="col-10 text-left">
+                <ul class="list-inline">
+                  <li class="list-inline-item"><a th:href="@{/lunch}">全部</a></li>
+                  <li class="list-inline-item" th:each="styleList:${styleList}">/&nbsp;&nbsp;<a th:href="@{/foodStyle/lunch/}+${styleList.getStyle()}" th:text="${styleList.getStyle()}"></a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="row food-nav-text">
+              <div class="col-2 text-right">
+                <span>做法 :</span>
+              </div>
+              <div class="col-10 text-left">
+                <ul class="list-inline">
+                  <li class="list-inline-item"><a th:href="@{/lunch}">全部</a></li>
+                  <li class="list-inline-item" th:each="methodList:${methodList}">/&nbsp;&nbsp;<a th:href="@{/cookMethod/lunch/}+${methodList.getMethod()}" th:text="${methodList.getMethod()}"></a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="row food-nav-text border-bottom border-secondery">
+              <div class="col-2 text-right">
+                <span>口味 :</span>
+              </div>
+              <div class="col-10 text-left">
+                <ul class="list-inline">
+                  <li class="list-inline-item"><a th:href="@{/lunch}">全部</a></li>
+                  <li class="list-inline-item" th:each="tasteList:${tasteList}">/&nbsp;&nbsp;<a th:href="@{/taste/lunch/}+${tasteList.getTaste()}" th:text="${tasteList.getTaste()}"></a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="row food-order-box justify-content-end border-bottom border-secondery">
+              <div class="col-1 text-center border-left border-right border-secondery"><a th:href="@{/food/time/}+'丰盛正餐'" class="food-order-text">时间&nbsp;<i class="fa fa-angle-down fa-sm" aria-hidden="true"></i></a></div>
+              <div class="col-1 text-center border-right border-secondery"><a th:href="@{/food/populor/}+'丰盛正餐'" class="food-order-text">人气&nbsp;<i class="fa fa-angle-down fa-sm" aria-hidden="true"></i></a></div>
+              <div class="col-1 text-center border-right border-secondery"><a th:href="@{/food/price/}+'丰盛正餐'" class="food-order-text">价格&nbsp;<i class="fa fa-angle-down fa-sm" aria-hidden="true"></i></a></div>
+            </div>
+            <div class="row my-3">
+              <div class="col-3 mt-2" th:each="lunch:${lunch}">
+                <a th:href="@{/foodInfo/}+${lunch.getFoodID()}" class="food-card">
+                  <div class="card">
+                    <div class="card-img-box">
+                      <img th:src="@{/food/getImg/}+${lunch.getFoodImg()}" class="card-img-top w-100 h-100">
+                    </div>
+                    <div class="card-body p-3 border-top border-secondery">
+                      <h5 class="card-title text-center">[[${lunch.getFoodName()}]]</h5>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <span class="card-subtitle mb-2 text-muted">价格：<span>[[${lunch.getPrice()}]]</span>&nbsp;<i class="fa fa-jpy" aria-hidden="true"></i></span>
+                        </div>
+                        <div class="col-sm-6 text-right">
+                          <span class="card-text card-text-color"><span>[[${lunch.getFavNum()}]]</span>人&nbsp;<i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
+                        </div>
+                      </div>
+                      <p class="card-text mt-2">地址&nbsp;<i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp;: 
+                        <span class="d-block text-truncate">[[${lunch.getProvince()}]][[${lunch.getCity()}]][[${lunch.getAddress()}]]</span>
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+        </div>
+
+        <script src="/jquery-3.4.1.min.js"></script>
+        <script src="/bootstrap/js/popper.js"></script>
+        <script src="/bootstrap/js/bootstrap.js"></script>
+    </body>
+</html>

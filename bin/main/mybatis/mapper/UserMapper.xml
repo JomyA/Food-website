@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zm.wte.user.dao.UserDao">
+	
+	<insert id="addUser" parameterType="String">
+		insert into Wuser(userName,userPass)
+		values
+		(#{account},#{password})
+	</insert>
+	
+	<select id="getUser" parameterType="String" resultType="User">
+		select * from Wuser
+		<where>
+			<if test="_parameter!=null and _parameter!=''">userName=#{account}</if>
+		</where>
+	</select>
+	
+	<select id="getUserByID" parameterType="String" resultType="User">
+		select * from Wuser
+		<where>
+			<if test="_parameter!=null and _parameter!=''">userID=#{userID}</if>
+		</where>
+	</select>
+	
+	<select id="getAllUsers" resultType="User">
+		select * from Wuser
+	</select>
+	
+	<select id="searchUser" resultType="User">
+		select * from Wuser
+		<where>
+			<if test="_parameter!=null and _parameter!=''">and userName=#{message} 
+			or userPhone=#{message} or userGender=#{message}</if>
+		</where>
+	</select>
+	
+	<delete id="delU" parameterType="Integer">
+		delete from Wuser where userID = #{userID}
+	</delete>
+	
+	<update id="saveInfo" parameterType="User">
+		update Wuser
+		<set>
+			<if test="userPass!=null">userPass=#{userPass},</if>
+			<if test="userName!=null">userName=#{userName},</if>
+			<if test="userImg!=null">userImg=#{userImg},</if>
+			<if test="userGender!=null">userGender=#{userGender},</if>
+			<if test="userPhone!=null">userPhone=#{userPhone},</if>
+			<if test="userSign!=null">userSign=#{userSign}</if>
+		</set>
+		where userID = #{userID}
+	</update>
+	
+	<insert id="addLogin">
+		insert into LoginLog(userID,loginIP)
+		values
+		(#{userID},#{loginIP})
+	</insert>
+	
+	<select id="getLog" parameterType="Integer" resultType="LoginLog">
+		select * from LoginLog
+		<where>
+			<if test="_parameter!=null and _parameter!=''">userID=#{userID}</if>
+		</where>
+	</select>
+	
+</mapper>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>What to eat ?</title>
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="/bootstrap/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/main.css">
+    </head>
+    <body>
+        <div class="border border-secondery">
+          <div class="row mx-0 row-banner"><span class="mx-auto">What to eat ?</span></div>
+          <div class="row mx-0">
+            <div class="col-2 border-right border-secondery">
+              <div class="row text-center">
+                <ul class="nav flex-column w-100">
+                  <li class="nav-item">
+                    <a th:href="@{/admin/mainPage}" class="nav-link admin-nav-text"><i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;个人信息</a>
+                  </li>
+                  <li class="nav-item">
+                    <a th:href="@{/admin/userList}" class="nav-link admin-nav-text"><i class="fa fa-user fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;用户管理</a>
+                  </li>
+                  <li class="nav-item">
+                    <a th:href="@{/admin/foodList}" class="nav-link admin-nav-text active-nav"><i class="fa fa-cutlery fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;菜品管理</a>
+                  </li>
+                  <li class="nav-item">
+                    <a th:href="@{/admin/managerList}" class="nav-link admin-nav-text"><i class="fa fa-user fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;管理员管理</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-10 my-col-bg">
+              <div class="continer my-container-bg border border-secondery my-3">
+                <div class="text-center border-bottom border-secondery">
+                    <div class="row my-3">
+                        <div id="foodTable_filter" class="w-100">
+                            <form th:action="@{/admin/searchFood}">
+                              <div class="form-row justify-content-center">
+                                <div class="col-1">
+                                    <button class="btn btn-primary">搜索&nbsp;<i class="fa fa-search"></i></button>
+                                </div>
+                                <div class="col-3">
+                                    <input class="form-control" type="search" name="message" placeholder="请输入相关信息" aria-controls="foodTable">
+                                </div>
+                              </div> 
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                      <table class="table table-hover table-bordered" id="foodTable">
+                        <thead class="thead-mybg">
+                          <tr>
+                            <th>菜品名</th>
+                            <th>菜品ID</th>
+                            <th>发布者ID</th>
+                            <th>发布者昵称</th>
+                            <th>发布时间</th>
+                            <th>删除</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr th:each="food:${foods}">
+                            <td th:text="${food.getFoodName()}"></td>
+                            <td th:text="${food.getFoodID()}"></td>
+                            <td th:text="${food.getUserID()}"></td>
+                            <td th:text="${food.getUserName()}"></td>
+                            <td th:text="${#dates.format(food.getPostTime(),'yyyy-MM-dd')}"></td>
+                            <td class="breadcrumb-item"><a href="javascript:void(0)" onclick="del('${food.getFoodID()}')">删除</a></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <script src="/jquery-3.4.1.min.js"></script>
+        <script src="/bootstrap/js/popper.js"></script>
+        <script src="/bootstrap/js/bootstrap.js"></script>
+
+        <script type='text/javascript'>
+          function del(foodID){
+            alert(foodID);
+            var event = event || window.event;
+            var obj=event.srcElement || event.target; //获取到当前事件的源<a>
+            var trow=obj.parentNode.parentNode;
+            var url = "/admin/delF/"+foodID; 
+            var data = {"foodID":foodID};
+              $.post(url,data,function(result){
+                if(result=="success"){
+                  trow.parentNode.removeChild(trow);
+                }else{
+                  alert("删除失败");
+                }
+            });
+          }
+		    </script>
+    </body>
+</html>
